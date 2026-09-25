@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b4f8a">
+<link rel="manifest" href="manifest.json">
+
+<title>SIGAP</title>
+
+<style>
+/* ===== PROFIL PENGGAGAS SIGAP ===== */
+
+.profil-card {
+  text-align: center;
+  cursor: pointer;
+  width: 180px;
+  margin: 20px auto;
+  transition: transform 0.2s ease;
+}
+
+.profil-card:hover {
+  transform: scale(1.03);
+}
+
+.profil-foto {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: 50%;
+  border: 4px solid #1f4f82;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.profil-nama {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #173f67;
+}
+
+.profil-jabatan {
+  font-size: 13px;
+  color: #555;
+}
+
+/* Pop-up */
+.profil-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.profil-modal-content {
+  background: white;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 18px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+  text-align: left;
+}
+
+.profil-modal-content h2 {
+  margin-top: 0;
+  color: #173f67;
+  text-align: center;
+}
+
+.profil-modal-content p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.profil-close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #555;
+}
+
+.profil-close:hover {
+  color: #000;
+}
+</style>
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:
+    linear-gradient(rgba(244,247,251,0.90),rgba(244,247,251,0.90)),
+    url("assets/latar.png") center center / cover fixed;
+  color:#17324d;
+}
+
+header{
+  background:#0b4f8a;
+  color:white;
+  padding:22px 18px;
+}
+
+.logo-sigap{
+  width:80px;
+  height:70px;
+  object-fit:contain;
+  margin-bottom:8px;
+}
+
+.sub{
+  font-size:13px;
+}
+
+main{
+  max-width:700px;
+  margin:auto;
+  padding:16px;
+}
+
+.hero,.item,.card{
+  background:white;
+  border:1px solid #dbe5ef;
+  border-radius:16px;
+  padding:16px;
+  margin:10px 0;
+  box-shadow:0 3px 12px #0000000d;
+}
+
+h1{
+  margin:0 0 8px;
+}
+
+h2{
+  margin-top:8px;
+}
+
+.hero p,.item p{
+  line-height:1.5;
+  color:#52677b;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.card{
+  cursor:pointer;
+}
+
+.icon{
+  font-size:28px;
+}
+
+.card b{
+  display:block;
+  margin-top:8px;
+}
+
+.card span{
+  font-size:12px;
+  color:#64748b;
+}
+
+input{
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  border:1px solid #dbe5ef;
+  border-radius:12px;
+  font-size:15px;
+  margin:12px 0;
+}
+
+.page{
+  display:none;
+}
+
+.active{
+  display:block;
+}
+
+.back{
+  border:0;
+  background:none;
+  color:#0b4f8a;
+  font-weight:bold;
+  padding:5px 0 12px;
+  cursor:pointer;
+}
+
+.num{
+  background:#e8f2fb;
+  color:#0b4f8a;
+  border-radius:50%;
+  padding:6px 9px;
+  margin-right:7px;
+}
+
+.btn{
+  display:inline-block;
+  background:#0b4f8a;
+  color:#fff;
+  text-decoration:none;
+  padding:11px 14px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#eef2f7;
+  font-size:11px;
+}
+
+.ok{
+  background:#e8f6ee;
+  color:#18794e;
+}
+
+.note{
+  background:#fff7df;
+  padding:13px;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.media{
+  margin-top:15px;
+}
+
+.media img,
+.media video{
+  width:100%;
+  max-width:500px;
+  border-radius:12px;
+  display:block;
+  margin:auto;
+}
+
+footer{
+  text-align:center;
+  color:#64748b;
+  font-size:12px;
+  padding:25px;
+}
+
+/* ===== LAYAR PEMBUKA SIGAP ===== */
+#splashSIGAP{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  overflow:auto;
+  background:
+    linear-gradient(rgba(244,247,251,.94),rgba(244,247,251,.97)),
+    url("assets/latar.png") center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  box-sizing:border-box;
+}
+.splash-box{
+  width:min(680px,100%);
+  text-align:center;
+  background:rgba(255,255,255,.96);
+  border:1px solid #dbe5ef;
+  border-radius:28px;
+  padding:28px 20px 24px;
+  box-shadow:0 15px 45px rgba(11,79,138,.16);
+  animation:splashIn .7s ease both;
+}
+.splash-logo{
+  width:82px;
+  height:72px;
+  object-fit:contain;
+  margin-bottom:4px;
+}
+.splash-brand{
+  font-size:42px;
+  font-weight:800;
+  letter-spacing:2px;
+  color:#0b4f8a;
+}
+.splash-sub{
+  color:#173f67;
+  font-weight:bold;
+  font-size:14px;
+  line-height:1.45;
+}
+.splash-hand{
+  font-size:82px;
+  line-height:1;
+  margin:20px 0 10px;
+  animation:handWave 1.8s ease-in-out infinite;
+}
+.splash-title{
+  color:#0b4f8a;
+  font-size:34px;
+  margin:8px 0;
+  animation:textUp .8s .25s ease both;
+}
+.splash-desc{
+  color:#52677b;
+  font-size:15px;
+  line-height:1.5;
+  margin:0 auto 16px;
+}
+.splash-pantun{
+  background:#eaf4fc;
+  border-radius:18px;
+  padding:16px 14px;
+  color:#174d7c;
+  line-height:1.65;
+  font-size:14px;
+  margin:14px auto 20px;
+  max-width:560px;
+  animation:textUp .8s .45s ease both;
+}
+.splash-qr-note{
+  color:#64748b;
+  font-size:12px;
+  margin-bottom:12px;
+}
+.splash-start{
+  border:0;
+  background:#0b4f8a;
+  color:#fff;
+  padding:14px 28px;
+  border-radius:30px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 7px 18px rgba(11,79,138,.25);
+  transition:.2s;
+}
+.splash-start:hover{transform:translateY(-2px);background:#083e6d;}
+.splash-footer{
+  margin-top:18px;
+  color:#64748b;
+  font-size:11px;
+}
+@keyframes splashIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes textUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes handWave{
+  0%,100%{transform:rotate(-4deg) translateY(0)}
+  50%{transform:rotate(4deg) translateY(-6px)}
+}
+@media(max-width:480px){
+  .splash-box{padding:22px 14px}
+  .splash-brand{font-size:34px}
+  .splash-hand{font-size:68px}
+  .splash-title{font-size:28px}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== LAYAR PEMBUKA SIGAP ===== -->
+<div id="splashSIGAP">
+  <div class="splash-box">
+    <img src="assets/logo-sigap.jpg" class="splash-logo" alt="Logo SIGAP">
+
+    <div class="splash-brand">SIGAP</div>
+    <div class="splash-sub">
+      Sistem Informasi Gerakan Bahasa Isyarat Pelayanan
+    </div>
+
+    <div class="splash-hand" aria-label="Bahasa isyarat">🤟</div>
+
+    <h1 class="splash-title">Selamat Datang di SIGAP</h1>
+
+    <p class="splash-desc">
+      Panduan Bahasa Isyarat untuk Pelayanan Paspor
+    </p>
+
+    <div class="splash-pantun">
+      “Senyum ramah membuka layanan,<br>
+      Bahasa isyarat menjalin pemahaman.<br>
+      Selamat datang di SIGAP,<br>
+      Bersama wujudkan pelayanan yang mudah dipahami.”
+    </div>
+
+    <div class="splash-qr-note">
+      Anda mengakses SIGAP melalui QR Code pelayanan.
+    </div>
+
+    <button class="splash-start" onclick="mulaiSIGAP()">
+      🤟 &nbsp; MULAI SIGAP &nbsp; →
+    </button>
+
+    <div class="splash-footer">
+      Kantor Imigrasi Kelas I Khusus Non TPI Jakarta Barat
+    </div>
+  </div>
+</div>
+
+
+<header>
+  <img src="assets/logo-sigap.jpg" class="logo-sigap" alt="Logo SIGAP">
+
+  <div class="brand">SIGAP</div>
+
+  <div class="sub">
+    Sistem Informasi Gerakan Bahasa Isyarat Pelayanan
+  </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+  <div class="hero">
+    <h1>Selamat Datang di SIGAP</h1>
+    <p>
+      Panduan layanan keimigrasian, persyaratan, dan kosakata
+      bahasa isyarat untuk mendukung komunikasi pelayanan.
+    </p>
+  </div>
+
+  <input
+    id="search"
+    placeholder="Cari kosakata, misalnya: jadwal"
+  >
+
+  <h2>Menu Utama</h2>
+
+  <div class="grid">
+
+    <div class="card" onclick="show('alur')">
+      <div class="icon">🛂</div>
+      <b>Alur Paspor</b>
+      <span>5 tahapan pelayanan</span>
+    </div>
+
+    <div class="card" onclick="show('syarat')">
+      <div class="icon">📄</div>
+      <b>Persyaratan</b>
+      <span>Dokumen paspor</span>
+    </div>
+
+    <div class="card" onclick="show('kamus')">
+      <div class="icon">🤟</div>
+      <b>Kamus Isyarat</b>
+      <span>Kosakata pelayanan</span>
+    </div>
+
+    <div class="card" onclick="show('layanan')">
+      <div class="icon">🏢</div>
+      <b>Layanan Keimigrasian</b>
+      <span>Jenis layanan di kantor</span>
+    </div>
+
+    <div class="card" onclick="show('tentang')">
+      <div class="icon">ℹ️</div>
+      <b>Tentang SIGAP</b>
+     <p>Tujuan dan referensi</p>
+    </div>
+
+  </div>
+
+  <div class="item">
+    <h3>📖 Kamus SIBI Resmi</h3>
+    <p>
+      Untuk bentuk isyarat resmi, gunakan Kamus SIBI langsung.
+    </p>
+
+    <a
+      class="btn"
+      href="https://pkplk.kemendikdasmen.go.id/sibi/"
+      target="_blank"
+    >
+      Buka Kamus SIBI
+    </a>
+  </div>
+
+</section>
+
+
+<!-- ALUR -->
+<section id="alur" class="page">
+
+  <button class="back" onclick="show('home')">
+    ← Kembali
+  </button>
+
+  <h2>Alur Pelayanan Paspor</h2>
+
+  <div class="item">
+    <h3>
+      <span class="num">01</span>
+      Pendaftaran M-Paspor
+    </h3>
+    <p>
+      Pemohon melakukan pendaftaran melalui aplikasi M-Paspor.
+    </p>
+  </div>
+
+  <div class="item">
+    <h3>
+      <span class="num">02</span>
+      Pengisian Data, Jadwal & Pembayaran
+    </h3>
+    <p>
+      Mengisi data, memilih lokasi/tanggal kedatangan,
+      dan melakukan pembayaran.
+    </p>
+  </div>
+
+  <div class="item">
+    <h3>
+      <span class="num">03</span>
+      Kedatangan ke Kantor Imigrasi
+    </h3>
+    <p>
+      Datang sesuai lokasi dan tanggal dengan membawa
+      persyaratan asli.
+    </p>
+  </div>
+
+  <div class="item">
+    <h3>
+      <span class="num">04</span>
+      Pemeriksaan, Wawancara & Biometrik
+    </h3>
+    <p>
+      Petugas memeriksa dokumen, melakukan wawancara
+      dan mengambil data biometrik.
+    </p>
+  </div>
+
+  <div class="item">
+    <h3>
+      <span class="num">05</span>
+      Tanda Terima Permohonan
+    </h3>
+    <p>
+      Jika persyaratan lengkap, petugas memberikan
+      tanda terima permohonan.
+    </p>
+  </div>
+
+  <div class="note">
+    <b>Catatan:</b>
+    Jika persyaratan belum lengkap, dokumen dapat dikembalikan
+    dan permohonan dianggap batal.
+  </div>
+
+  <div class="item">
+    <a
+      class="btn"
+      href="https://jakartabarat.imigrasi.go.id/paspor-baru/"
+      target="_blank"
+    >
+      Buka sumber resmi Kanim Jakbar
+    </a>
+  </div>
+
+</section>
+
+
+<!-- PERSYARATAN -->
+<section id="syarat" class="page">
+
+  <button class="back" onclick="show('home')">
+    ← Kembali
+  </button>
+
+  <h2>Persyaratan Paspor</h2>
+
+  <div class="item">
+    <h3>Paspor Baru</h3>
+    <p>Persyaratan dasar meliputi E-KTP, Kartu Keluarga, serta akta kelahiran/ijazah/buku nikah/surat baptis sesuai ketentuan.</p>
+  </div>
+
+  <div class="item">
+    <h3>Pergantian Paspor</h3>
+    <p>Digunakan untuk permohonan pergantian paspor. Istilah resmi yang digunakan Kanim Jakarta Barat adalah <b>pergantian paspor</b>, bukan hanya “perpanjangan”.</p>
+  </div>
+
+  <div class="item">
+    <h3>Paspor Anak</h3>
+    <p>Permohonan paspor untuk anak dengan persyaratan dan dokumen pendukung sesuai ketentuan yang berlaku.</p>
+  </div>
+
+  <div class="item">
+    <h3>Dokumen Dasar</h3>
+    <p>E-KTP, Kartu Keluarga, dan dokumen pendukung sesuai jenis permohonan. Bawa dokumen asli dan salinannya sesuai ketentuan.</p>
+  </div>
+
+  <div class="note">
+    Petugas dapat meminta dokumen tambahan apabila diperlukan. Persyaratan dapat berbeda sesuai jenis permohonan.
+  </div>
+
+  <div class="item">
+    <a
+      class="btn"
+      href="https://jakartabarat.imigrasi.go.id/paspor-baru/"
+      target="_blank"
+    >
+      Lihat persyaratan resmi
+    </a>
+  </div>
+
+</section>
+
+
+<!-- LAYANAN KEIMIGRASIAN -->
+<section id="layanan" class="page">
+
+  <button class="back" onclick="show('home')">
+    ← Kembali
+  </button>
+
+  <h2>Layanan Keimigrasian</h2>
+
+  <p style="color:#64748b">
+    SIGAP merangkum kelompok layanan yang tercantum pada situs resmi Kantor Imigrasi Jakarta Barat,
+    beserta beberapa layanan rinci yang ditemukan pada halaman resminya. Untuk persyaratan dan prosedur
+    terbaru, pemohon tetap diarahkan ke sumber resmi.
+  </p>
+
+  <div class="item">
+    <h3>🛂 Penerbitan Paspor</h3>
+    <p>
+      <b>Paspor Baru</b>, <b>Pergantian Paspor</b>, dan <b>Paspor Anak</b>.
+      Pada halaman resmi juga terdapat ketentuan untuk paspor baru anak dan anak berkewarganegaraan ganda.
+      Pengajuan paspor baru atau pergantian paspor dilakukan melalui M-Paspor sesuai ketentuan.
+    </p>
+    <a class="btn" href="https://jakartabarat.imigrasi.go.id/paspor-baru/" target="_blank">Sumber Paspor</a>
+  </div>
+
+  <div class="item">
+    <h3>🪪 Izin Tinggal</h3>
+    <p>
+      Kelompok ini mencakup <b>Izin Tinggal Kunjungan</b>, <b>Izin Tinggal Terbatas (ITAS)</b>,
+      <b>Izin Tinggal Tetap (ITAP)</b>, serta <b>Izin Masuk Kembali</b>.
+      Halaman resmi juga memuat berbagai permohonan seperti perpanjangan ITAS dan alih status ITAS ke ITAP
+      dengan persyaratan yang berbeda sesuai jenis pemohon.
+    </p>
+    <a class="btn" href="https://jakartabarat.imigrasi.go.id/izin-tinggal/" target="_blank">Sumber Izin Tinggal</a>
+  </div>
+
+  <div class="item">
+    <h3>📑 Administratif Keimigrasian</h3>
+    <p>
+      Kelompok layanan administratif yang tercantum pada situs resmi. Di dalam informasi layanan Kanim Jakarta Barat
+      juga terdapat layanan rinci seperti <b>Mutasi Paspor</b>, <b>Perubahan Data Paspor</b>, dan
+      <b>Proof of Fund</b>.
+    </p>
+    <a class="btn" href="https://jakartabarat.imigrasi.go.id/" target="_blank">Lihat Informasi Resmi</a>
+  </div>
+
+  <div class="item">
+    <h3>🇮🇩 Kewarganegaraan</h3>
+    <p>
+      Kanim Jakarta Barat juga menyediakan informasi layanan kewarganegaraan dengan beberapa skema,
+      termasuk skema perkawinan campur dan non-perkawinan campur sesuai ketentuan yang berlaku.
+    </p>
+    <a class="btn" href="https://jakartabarat.imigrasi.go.id/kewarganegaraan/" target="_blank">Sumber Kewarganegaraan</a>
+  </div>
+
+  <div class="item">
+    <h3>📣 Pengaduan</h3>
+    <p>
+      Pengaduan tercantum sebagai salah satu kelompok pelayanan pada situs resmi Kanim Jakarta Barat.
+      Informasi dan kanal pengaduan dapat diperiksa melalui situs resmi.
+    </p>
+    <a class="btn" href="https://jakartabarat.imigrasi.go.id/" target="_blank">Lihat Informasi Resmi</a>
+  </div>
+
+  <div class="item">
+    <h3>🔎 Layanan Rinci yang Sudah Teridentifikasi</h3>
+    <p>
+      <b>Mutasi Paspor</b> · <b>Perubahan Data Paspor</b> · <b>Perpanjangan ITAS</b> ·
+      <b>Alih Status ITAS ke ITAP</b> · <b>Izin Tinggal Kunjungan</b> ·
+      <b>Izin Tinggal Tetap</b> · <b>Izin Masuk Kembali</b>.
+    </p>
+    <p style="color:#64748b">
+      Daftar ini merupakan ringkasan dari halaman layanan resmi yang telah ditelusuri, bukan pengganti ketentuan resmi.
+    </p>
+  </div>
+
+  <div class="note">
+    <b>Catatan:</b> SIGAP bukan pengganti layanan resmi Kanim Jakarta Barat. Informasi persyaratan,
+    biaya, alur, dan ketersediaan layanan dapat berubah. Selalu periksa sumber resmi sebelum mengajukan permohonan.
+  </div>
+
+</section>
+
+
+<!-- KAMUS -->
+<section id="kamus" class="page">
+
+  <button class="back" onclick="show('home')">
+    ← Kembali
+  </button>
+
+  <h2>Kamus Bahasa Isyarat</h2>
+
+  <p style="color:#64748b">
+    Kosakata dipilih untuk kebutuhan pelayanan.
+    Status perlu validasi berarti belum boleh dianggap
+    sebagai isyarat SIBI resmi.
+  </p>
+
+  <div id="words"></div>
+
+  <div class="item">
+    <a
+      class="btn"
+      href="https://pkplk.kemendikdasmen.go.id/sibi/pencarian/"
+      target="_blank"
+    >
+      Cari langsung di Kamus SIBI
+    </a>
+  </div>
+
+</section>
+
+
+<!-- DETAIL -->
+<section id="detail" class="page">
+
+  <button class="back" onclick="show('kamus')">
+    ← Kembali ke Kamus
+  </button>
+
+  <div class="hero">
+
+    <h1 id="dt"></h1>
+
+    <p id="dd"></p>
+
+    <span id="db" class="badge"></span>
+
+    <div class="media">
+
+      <img
+        id="detailImage"
+        alt="Gambar kosakata"
+        style="display:none;"
+      >
+
+      <video
+        id="detailVideo"
+        controls
+        style="display:none;"
+      ></video>
+
+    </div>
+
+    <p id="ds"></p>
+
+  </div>
+
+</section>
+
+
+<!-- TENTANG -->
+<section id="tentang" class="page">
+
+  <button class="back" onclick="show('home')">
+    ← Kembali
+  </button>
+
+  <h2>Tentang SIGAP</h2>
+
+  <div class="item">
+    <h3 onclick="toggleTujuanSIGAP()" style="cursor:pointer;">
+      Tujuan <span id="panahTujuanSIGAP">▼</span>
+    </h3>
+
+    <div id="isiTujuanSIGAP" style="display:none;">
+      <p>
+        SIGAP dikembangkan sebagai media digital untuk membantu pemohon tunarungu atau pengguna bahasa isyarat dalam memahami informasi dan tahapan pelayanan paspor di Kantor Imigrasi Kelas I Khusus Non TPI Jakarta Barat. Informasi disajikan secara sederhana dan visual agar lebih mudah dipahami serta dapat membantu pengguna mengenali berbagai tahapan yang akan dilalui selama proses pelayanan paspor.
+      </p>
+
+      <p>
+        SIGAP menyediakan informasi mengenai alur pelayanan paspor, kebutuhan dokumen, serta kosakata bahasa isyarat yang relevan dengan komunikasi dalam pelayanan. Pengguna dapat mencari kosakata bahasa isyarat melalui SIGAP dan memperoleh referensi tambahan melalui SIBI untuk membantu menemukan istilah atau kosakata yang belum tersedia di dalam media SIGAP.
+      </p>
+
+      <p>
+        Melalui penyajian foto dan pengembangan media video bahasa isyarat, SIGAP diharapkan dapat menjadi media pendukung komunikasi antara petugas pelayanan dan pemohon tunarungu atau pengguna bahasa isyarat. Dengan demikian, SIGAP tidak hanya memberikan informasi mengenai pelayanan paspor, tetapi juga membantu menciptakan proses komunikasi yang lebih mudah dipahami dalam lingkungan pelayanan keimigrasian.
+      </p>
+
+      <p>
+        <strong>Inti konsep SIGAP:</strong><br>
+        Pemohon tunarungu/pengguna bahasa isyarat → memahami pelayanan paspor → mencari kosakata bahasa isyarat → menggunakan foto/video sebagai panduan → membantu komunikasi dengan petugas.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- PROFIL PENGE SIGAP -->
+  <div class="item">
+
+    <h3>👤Pengembang SIGAP</h3>
+
+    <div class="profil-card" onclick="bukaProfilSIGAP()">
+
+      <img
+        src="assets/profil-sigap.jpg"
+        alt="Jelfriansa Zagoto"
+        class="profil-foto"
+      >
+
+      <div class="profil-nama">
+        Jelfriansa Zagoto
+      </div>
+
+      <div class="profil-jabatan">
+        
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CARA PENGGUNAAN SIGAP -->
+  <div class="item">
+
+  <h3 onclick="togglePenggunaanSIGAP()" style="cursor:pointer;">
+    Cara Penggunaan SIGAP
+    <span id="panahPenggunaanSIGAP">▼</span>
+  </h3>
+
+  <div id="isiPenggunaanSIGAP" style="display:none; margin-top:10px;">
+
+    <p>
+      SIGAP dirancang sebagai media pendukung untuk membantu pengguna
+      memahami informasi pelayanan keimigrasian dan kosakata bahasa
+      isyarat yang berkaitan dengan pelayanan.
+    </p>
+
+    <p>
+      <strong>1. Alur Paspor</strong><br>
+      Menampilkan tahapan pelayanan paspor secara berurutan, mulai dari
+      pendaftaran melalui M-Paspor hingga pemberian tanda terima permohonan.
+    </p>
+
+    <p>
+      <strong>2. Persyaratan</strong><br>
+      Menampilkan informasi umum mengenai dokumen yang diperlukan dalam
+      pelayanan paspor serta mengarahkan pengguna ke sumber resmi Kanim
+      Jakarta Barat untuk informasi yang lebih lengkap dan terbaru.
+    </p>
+
+    <p>
+      <strong>3. Kamus Bahasa Isyarat</strong><br>
+      Pengguna dapat mencari kosakata yang tersedia, kemudian memilih
+      kosakata untuk melihat keterangan serta foto atau video yang tersedia.
+    </p>
+
+    <p>
+      <strong>4. Layanan Keimigrasian</strong><br>
+      Menampilkan kelompok layanan keimigrasian yang dirangkum dari
+      informasi pada situs resmi Kantor Imigrasi Jakarta Barat.
+    </p>
+
+    <p>
+      <strong>5. Kamus SIBI Resmi</strong><br>
+      Jika kosakata yang dicari belum tersedia di SIGAP atau pengguna ingin
+      melihat referensi isyarat resmi, pengguna dapat membuka Kamus SIBI
+      melalui tautan yang tersedia.
+    </p>
+
+    <p>
+      <strong>Catatan tentang foto dan video bahasa isyarat:</strong><br>
+      Foto atau video yang terdapat dalam SIGAP merupakan media panduan
+      yang dikembangkan atau disiapkan untuk kebutuhan SIGAP. Foto atau
+      video tersebut <strong>tidak otomatis merupakan isyarat SIBI resmi</strong>
+      dan tidak dimaksudkan untuk menggantikan Kamus SIBI.
+    </p>
+
+    <p>
+      Apabila suatu istilah belum tersedia atau belum memiliki referensi
+      yang sesuai di SIGAP, pengguna diarahkan untuk mencari dan
+      memeriksanya melalui Kamus SIBI resmi. Materi yang belum divalidasi
+      harus dipahami sebagai panduan pendukung, bukan sebagai rujukan resmi.
+    </p>
+
+  </div>
+
+  </div>
+
+
+  <div class="item">
+
+  <h3 onclick="toggleReferensiSIGAP()" style="cursor:pointer;">
+    Referensi
+    <span id="panahReferensiSIGAP">▼</span>
+  </h3>
+
+  <div id="isiReferensiSIGAP" style="display:none; margin-top:10px;">
+
+    <p>
+      Alur dan persyaratan pelayanan mengacu pada informasi
+      resmi Kantor Imigrasi Kelas I Khusus Non TPI Jakarta Barat.
+    </p>
+
+    <p>
+      Kosakata bahasa isyarat diarahkan pada Kamus Sistem Isyarat
+      Bahasa Indonesia (SIBI) sebagai salah satu sumber referensi.
+    </p>
+
+    <p>
+      Materi dalam SIGAP disusun sebagai media pendukung untuk
+      membantu memahami informasi pelayanan dan kosakata bahasa
+      isyarat yang relevan dengan pelayanan keimigrasian.
+    </p>
+
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- POP-UP PROFIL PENGEMBANG SIGAP -->
+<div id="profilSIGAP" class="profil-modal">
+  <div class="profil-modal-content">
+    <span class="profil-close" onclick="tutupProfilSIGAP()">&times;</span>
+    <h2>Profil Pengembang SIGAP</h2>
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="assets/profil-sigap.jpg"
+     alt="Jelfriansa Zagoto"
+     style="width:180px;height:180px;object-fit:cover;object-position:center top;border-radius:50%;border:4px solid #1f4f82;">
+    </div>
+    <p><strong>Nama:</strong><br>Jelfriansa Zagoto</p>
+    <p><strong>Status:</strong><br>Peserta Maganghub Angkatan 2 Batch I 2026</p>
+    <p><strong>Instansi:</strong><br>Kantor Imigrasi Kelas I Khusus Non TPI Jakarta Barat</p>
+    <p><strong>Divisi:</strong><br>Juru Bahasa Isyarat</p>
+    <p><strong>Peran:</strong><br>Pengembang SIGAP</p>
+  </div>
+</div>
+
+<footer>
+  SIGAP • Prototype Inovasi Pelayanan<br>
+  Kantor Imigrasi Kelas I Khusus Non TPI Jakarta Barat
+</footer>
+
+</main>
+
+
+<!-- DATA SIGAP -->
+<script src="data.js"></script>
+
+<script>
+
+const words = window.SIGAP_WORDS || [];
+
+function render(q=''){
+
+  let e = document.getElementById('words');
+
+  e.innerHTML = '';
+
+  words
+    .filter(x =>
+      x.word.toLowerCase().includes(q.toLowerCase())
+    )
+    .forEach(x => {
+
+      let d = document.createElement('div');
+
+      d.className = 'card';
+
+      d.innerHTML =
+        '<div class="icon">🤟</div>' +
+        '<b>' + x.word + '</b>' +
+        '<span>' + x.description + '</span><br>' +
+        '<span class="badge ' +
+        (x.status.startsWith('Referensi') ? 'ok' : '') +
+        '">' +
+        x.status +
+        '</span>';
+
+      d.onclick = () => {
+
+        document.getElementById('dt').textContent =
+          x.word;
+
+        document.getElementById('dd').textContent =
+          x.description;
+
+        document.getElementById('db').textContent =
+          x.status;
+
+        document.getElementById('ds').textContent =
+          x.source || '';
+
+        const image =
+          document.getElementById('detailImage');
+
+        const video =
+          document.getElementById('detailVideo');
+
+        image.style.display = 'none';
+        video.style.display = 'none';
+
+        image.removeAttribute('src');
+        video.removeAttribute('src');
+
+        if(x.image){
+
+          image.src = x.image;
+          image.style.display = 'block';
+
+        }
+
+        if(x.video){
+
+          video.src = x.video;
+          video.style.display = 'block';
+
+        }
+
+        show('detail');
+
+      };
+
+      e.appendChild(d);
+
+    });
+
+}
+
+
+
+function mulaiSIGAP(){
+  const splash = document.getElementById("splashSIGAP");
+  splash.style.transition = "opacity .35s ease";
+  splash.style.opacity = "0";
+  setTimeout(() => {
+    splash.style.display = "none";
+    window.scrollTo(0,0);
+  }, 350);
+}
+
+function show(id){
+
+  document
+    .querySelectorAll('.page')
+    .forEach(x =>
+      x.classList.remove('active')
+    );
+
+  document
+    .getElementById(id)
+    .classList.add('active');
+
+  scrollTo(0,0);
+
+}
+
+
+document
+  .getElementById('search')
+  .oninput = e => {
+
+    show('kamus');
+
+    render(e.target.value);
+
+  };
+
+
+
+function bukaProfilSIGAP() {
+  document.getElementById("profilSIGAP").style.display = "flex";
+}
+
+function tutupProfilSIGAP() {
+  document.getElementById("profilSIGAP").style.display = "none";
+}
+
+render();
+
+</script>
+<script>
+function toggleTujuanSIGAP() {
+    const isi = document.getElementById("isiTujuanSIGAP");
+    const panah = document.getElementById("panahTujuanSIGAP");
+
+    if (isi.style.display === "none") {
+        isi.style.display = "block";
+        panah.textContent = "▲";
+    } else {
+        isi.style.display = "none";
+        panah.textContent = "▼";
+    }
+}
+
+function togglePenggunaanSIGAP() {
+    const isi = document.getElementById("isiPenggunaanSIGAP");
+    const panah = document.getElementById("panahPenggunaanSIGAP");
+
+    if (isi.style.display === "none") {
+        isi.style.display = "block";
+        panah.textContent = "▲";
+    } else {
+        isi.style.display = "none";
+        panah.textContent = "▼";
+    }
+}
+
+function toggleReferensiSIGAP() {
+    const isi = document.getElementById("isiReferensiSIGAP");
+    const panah = document.getElementById("panahReferensiSIGAP");
+
+    if (isi.style.display === "none") {
+        isi.style.display = "block";
+        panah.textContent = "▲";
+    } else {
+        isi.style.display = "none";
+        panah.textContent = "▼";
+    }
+}
+</script>
+
+</body>
+</html>
